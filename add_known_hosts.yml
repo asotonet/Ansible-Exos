@@ -1,0 +1,13 @@
+---
+- name: Add switches to known_hosts
+  hosts: localhost
+  gather_facts: yes
+  tasks:
+    - name: Ensure known hosts file has correct entries
+      known_hosts:
+        path: "{{ ansible_user_dir }}/.ssh/known_hosts"
+        name: "{{ item }}"
+        key: "{{ lookup('file', 'known_hosts') }}"
+      with_items:
+        - 192.168.220.20
+        - 192.168.220.21

@@ -1,0 +1,43 @@
+---
+- name: Extract configuration from Extreme EXOS switches
+  hosts: extreme_switches
+  gather_facts: no
+  tasks:
+    - name: Ensure configs directory exists
+      file:
+        path: "configs"
+        state: directory
+
+    - name: Get switch diagnostic
+      async: 2100
+      exos_command:
+        commands:
+#          - "show tech-support"
+#          - "show tech-support | include (HAL CPU and Fabric Congestion)"
+          - "show switch"
+#          - "show stacking"
+          - "show power"
+          - "show fans detail"
+          - "show temperature"
+          - "show ports txerrors no-refresh port-number"
+          - "show ports stack-ports statistics no-refresh"
+#          - "show ports rate-limit flood no-refresh port-number | include A"
+          - "debug hal show congestion"
+#          - "show configuration"
+      vars:
+        ansible_command_timeout: 0
+      register: config_output
+
+    - name: Concatenate command outputs
+      set_fact:
+        concatenated_output: "{{ config_output.stdout | join('\n\n\n--------------******-----------------\n-------------******--------------\n\n\n') }}"
+
+#    - name: Debug config_output
+#      debug:
+#        var: config_output.stdout_lines
+
+
+    - name: Save configuration to TXT file
+      copy:
+        content: "{{ concatenated_output }}"
+        dest: "configs/{{ inventory_hostname }}.txt"
