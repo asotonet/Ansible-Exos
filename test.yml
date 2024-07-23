@@ -9,7 +9,7 @@
         state: directory
 
     - name: Get switch diagnostic
-      async: 2100
+#      async: 2100
       exos_command:
         commands:
 #          - "show tech-support"
@@ -28,16 +28,17 @@
         ansible_command_timeout: 0
       register: config_output
 
-    - name: Concatenate command outputs
-      set_fact:
-        concatenated_output: "{{ config_output.stdout | join('\n\n\n--------------******-----------------\n-------------******--------------\n\n\n') }}"
+#    - name: Concatenate command outputs
+ #     set_fact:
+#        concatenated_output: "{{ config_output.stdout | join('\n\n\n--------------******-----------------\n-------------******--------------\n\n\n') }}"
 
 #    - name: Debug config_output
 #      debug:
 #        var: config_output.stdout_lines
 
 
-    - name: Save configuration to TXT file
-      copy:
-        content: "{{ concatenated_output }}"
-        dest: "configs/{{ inventory_hostname }}.txt"
+#    - name: Save configuration to TXT file
+ #     copy:
+ #       content: "{{ concatenated_output }}"
+#        dest: "configs/{{ inventory_hostname }}.txt"
+#
