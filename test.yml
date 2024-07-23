@@ -10,7 +10,7 @@
 
     - name: Get switch diagnostic
 #      async: 2100
-      ansible.builtin.exos_command:
+      exos_command:
         commands:
 #          - "show tech-support"
 #          - "show tech-support | include (HAL CPU and Fabric Congestion)"
